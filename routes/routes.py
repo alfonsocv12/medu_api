@@ -28,3 +28,15 @@ def gel_all_user():
     response.content_type = 'application/json'
     respuesta = user_controller.get_all_users()
     return respuesta
+
+@bottle.route('/one_user', method='GET')
+def gel_all_user():
+    response.content_type = 'application/json'
+    respuesta = user_controller.get_user_logged()
+    return respuesta
+
+@bottle.route('/update_user/<user_id>', method='PATCH')
+def gel_all_user(user_id):
+    response.content_type = 'application/json'
+    respuesta = user_controller.update_user(user_id)
+    return respuesta
