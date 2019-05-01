@@ -19,6 +19,10 @@ user_controller.response = response
 lista_controller = ListaController(db)
 lista_controller.response = response
 
+@bottle.route('/', method='GET')
+def sms_post_nucle(name):
+    return 'hellow happy sunday'
+
 @bottle.route('/name/<name>', method='GET')
 def sms_post_nucle(name):
     return {'name':name}
