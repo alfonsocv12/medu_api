@@ -27,9 +27,6 @@ class UserController():
         Funcion encargada de traer un user
         por su id
         '''
-        def myconverter(o):
-            if isinstance(o, datetime.datetime):
-                return o.__str__()
         if not user_id:
             user_id = request.forms.getone('user_id', None)
         doc_ref = self.db.collection('users')
@@ -37,22 +34,23 @@ class UserController():
         vector_user = {}
         for user in users:
             vector_user = user.to_dict()
-        return json.dumps(vector_user, default=myconverter, indent=4, sort_keys=True)
+        return json.dumps(vector_user, default=self.myconverter(), indent=4, sort_keys=True)
 
     def get_user_logged_correo(self, correo):
         '''
         Funcion encargada de traer un user
         por su id
         '''
-        def myconverter(o):
-            if isinstance(o, datetime.datetime):
-                return o.__str__()
         doc_ref = self.db.collection('users')
         users = doc_ref.where('email','==',correo).stream()
         vector_user = {}
         for user in users:
             vector_user = user.to_dict()
         return vector_user
+
+    def myconverter(self, o):
+        if isinstance(o, datetime.datetime):
+            return o.__str__()
 
     def update_user(self, user_id):
         '''

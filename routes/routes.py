@@ -1,5 +1,6 @@
 import os, sys, bottle
-from bottle import route, run, template, response
+from bottle import route, run, template, response, error
+from error import handler
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -7,6 +8,7 @@ from controllers.user_controller import UserController
 from controllers.lista_controller import ListaController
 
 application = bottle.default_app()
+application.error_handle = handler
 cred = credentials.Certificate('firestore_env.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -49,4 +51,63 @@ def gel_all_user(user_id):
 def gel_all_user(correo_user):
     response.content_type = 'application/json'
     respuesta = lista_controller.checar_entrada(correo_user)
+    return respuesta
+
+@error(200)
+def error200(error):
+    error.content_type = 'application/json'
+    #db.disconnect('local')
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(404)
+def error404(error):
+    error.content_type = 'application/json'
+    #db.disconnect('local')
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(200)
+def error200(error):
+    error.content_type = 'application/json'
+    #db.disconnect('local')
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(500)
+def error500(error):
+    error.content_type = 'application/json'
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(400)
+def error400(error):
+    error.content_type = 'application/json'
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(401)
+def error401(error):
+    error.content_type = 'application/json'
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
+    return respuesta
+
+@error(403)
+def error401(error):
+    error.content_type = 'application/json'
+    body = error.body
+    user_controller.errors = lista_controller.errors = []
+    respuesta = str({'{}'.format(error.body)})
     return respuesta
