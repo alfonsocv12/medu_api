@@ -17,11 +17,6 @@ user_controller.response = response
 lista_controller = ListaController(db)
 lista_controller.response = response
 
-
-@route('/hello/<name>')
-def index(name):
-    return template('<b>Hello {{name}}</b>!', name=name)
-
 @bottle.route('/name/<name>', method='GET')
 def sms_post_nucle(name):
     return {'name':name}
@@ -48,4 +43,10 @@ def update_user(user_id):
 def gel_all_user(user_id):
     response.content_type = 'application/json'
     respuesta = user_controller.checar_salida(correo_user)
+    return respuesta
+
+@bottle.route('/checar_entrada/<correo_user>', method='POST')
+def gel_all_user(correo_user):
+    response.content_type = 'application/json'
+    respuesta = lista_controller.checar_entrada(correo_user)
     return respuesta
