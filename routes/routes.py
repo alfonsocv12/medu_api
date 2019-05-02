@@ -11,7 +11,7 @@ try:
     cred = credentials.Certificate(os.environ.get('firebase_json'))
     firebase_admin.initialize_app(cred)
 except:
-    firestore_cred = os.environ.get('firebase_json')
+    firestore_cred = str(os.environ.get('firebase_json'))
     firestore_cred = json.loads(json)
     cred = credentials.Certificate(firestore_cred)
     firebase_admin.initialize_app(cred)
