@@ -34,7 +34,7 @@ class UserController():
         vector_user = {}
         for user in users:
             vector_user = user.to_dict()
-        return json.dumps(vector_user, default=self.myconverter(), indent=4, sort_keys=True)
+        return json.dumps(vector_user, default=self.myconverter, indent=4, sort_keys=True)
 
     def get_user_logged_correo(self, correo):
         '''
