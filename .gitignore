@@ -2,3 +2,4 @@ firestore_env.json
 *.pyc
 __pycache__
 routes/__pycache/
+env.py

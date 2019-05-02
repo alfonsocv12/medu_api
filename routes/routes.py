@@ -6,10 +6,16 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from controllers.user_controller import UserController
 from controllers.lista_controller import ListaController
+try:
+    from env import os
+except:
+    print('aws')
 
 application = bottle.default_app()
 application.error_handle = handler
-cred = credentials.Certificate('firestore_env.json')
+cred = credentials.Certificate(os.environ.get('firebase_json'))
+if not os.environ.get('HEROKU'):
+    cred = credentials.Certificate('firestore_env.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 response.content_type = 'application/json'
@@ -20,7 +26,7 @@ lista_controller = ListaController(db)
 lista_controller.response = response
 
 @bottle.route('/', method='GET')
-def sms_post_nucle(name):
+def sms_post_nucle():
     return 'hellow happy sunday'
 
 @bottle.route('/name/<name>', method='GET')
