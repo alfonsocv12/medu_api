@@ -9,14 +9,11 @@ from controllers.lista_controller import ListaController
 try:
     from env import os
 except:
-    import os
-    print('aws')
-
+    pass
+    
 application = bottle.default_app()
 application.error_handle = handler
 cred = credentials.Certificate(os.environ.get('firebase_json'))
-if not os.environ.get('HEROKU'):
-    cred = credentials.Certificate('firestore_env.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 response.content_type = 'application/json'
