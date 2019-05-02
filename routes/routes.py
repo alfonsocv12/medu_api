@@ -9,6 +9,7 @@ from controllers.lista_controller import ListaController
 try:
     from env import os
 except:
+    import os
     print('aws')
 
 application = bottle.default_app()
