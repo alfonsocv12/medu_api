@@ -1,5 +1,6 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
+from bottle import request
 from controllers.user_controller import UserController
 from controllers.base_controller import BaseController
 
@@ -87,3 +88,49 @@ class ListaController(BaseController, UserController):
         else:
             array_entrada = self.set_entrada(array_entrada, today)
         return [array_entrada, uid]
+
+    def set_asistencia_intermedia(self, correo_user):
+        '''
+        Funcion encargada de revisar
+        asistencia intermedia
+        '''
+        user = self.get_user_logged_correo(correo_user)
+        uid = self.check_if_key(user, 'uid')
+        user_update = self.db.collection('users').document(uid)
+        asistencias = self.check_if_key(user, 'asistencias_intermedias')
+        valor = self.get_valor_asistensia()
+        hoy = str(date.today())
+        if not asistencias:
+            user_update.set({
+                u'asistencias_intermedias':{
+                    u'{}'.format(hoy):[
+                        valor
+                    ]
+                }
+            }, merge=True)
+        else:
+            self.add_new_assist(asistencias, user_update, hoy, valor)
+        return self.get_user_logged_correo(correo_user)
+
+    def add_new_assist(self, asistencias, user_update, hoy, valor):
+        '''
+        Funcion encargada de crear una
+        nueva asistencia
+        '''
+        today = self.check_if_key(asistencias, hoy)
+        if today:
+            today.append(valor)
+        else:
+            asistencias[hoy]=[valor]
+        user_update.set({
+            u'asistencias_intermedias': asistencias
+        }, merge=True)
+
+    def get_valor_asistensia(self):
+        '''
+        Funcion encargada de optener
+        el valor de la asistencia
+        '''
+        if request.forms.get('valor'):
+            return 'Presente'
+        return 'Ausente'

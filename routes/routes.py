@@ -64,6 +64,13 @@ def gel_all_user(correo_user):
     respuesta = lista_controller.checar_entrada(correo_user)
     return respuesta
 
+
+@bottle.route('/checar_asistencia/<correo_user>', method='POST')
+def post_asistencia(correo_user):
+    response.content_type = 'application/json'
+    respuesta = lista_controller.set_asistencia_intermedia(correo_user)
+    return respuesta
+
 @error(200)
 def error200(error):
     error.content_type = 'application/json'

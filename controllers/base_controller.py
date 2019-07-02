@@ -25,3 +25,11 @@ class BaseController(ErrorController):
         if len(self.errors)>0:
             error = self.set_type(error)
             self.abort(error,", ".join(self.errors))
+
+    def check_if_key(self, dict, key, dafault=None):
+        '''
+        Funcion dedicada a revisar si el json tiene un valor
+        '''
+        if key in dict:
+            return dict[key]
+        return dafault
