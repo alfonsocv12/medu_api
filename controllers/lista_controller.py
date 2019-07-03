@@ -131,6 +131,6 @@ class ListaController(BaseController, UserController):
         Funcion encargada de optener
         el valor de la asistencia
         '''
-        if request.forms.get('valor'):
+        if request.query.presente:
             return 'Presente'
         return 'Ausente'
