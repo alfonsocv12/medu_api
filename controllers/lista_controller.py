@@ -103,7 +103,8 @@ class ListaController(BaseController, UserController):
         if not asistencias:
             user_update.set({
                 u'asistencias_intermedias':{
-                    u'{}'.format(hoy):[
+                    u'fecha':hoy
+                    u'asistencia':[
                         valor
                     ]
                 }
