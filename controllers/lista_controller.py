@@ -102,12 +102,13 @@ class ListaController(BaseController, UserController):
         hoy = str(date.today())
         if not asistencias:
             user_update.set({
-                u'asistencias_intermedias':{
-                    u'fecha':hoy,
-                    u'asistencias':[
-                        valor
-                    ]
-                }
+                u'asistencias_intermedias':[
+                    {u'fecha':hoy,
+                     u'asistencias':[
+                         valor
+                     ]
+                    }
+                ]
             }, merge=True)
         else:
             self.add_new_assist(asistencias, user_update, hoy, valor)
@@ -118,13 +119,16 @@ class ListaController(BaseController, UserController):
         Funcion encargada de crear una
         nueva asistencia
         '''
-
-        if self.check_if_key(asistencias, 'fecha') == hoy:
-            today = self.check_if_key(asistencias, 'asistencias')
-            today.append(valor)
-        else:
-            asistencias['fecha']=hoy
-            asistencias['asistencias'] = [valor]
+        append_valor = False
+        for assistencia in asistencias:
+            if self.check_if_key(asistencia, 'fecha') == hoy:
+                today = self.check_if_key(asistencia, 'asistencias')
+                today.append(valor)
+                append_valor = True
+        if not append_valor:
+            new_asistencias['fecha']=hoy
+            new_asistencias['asistencias'] = [valor]
+            asistencias.append(new_asistencias)
         user_update.set({
             u'asistencias_intermedias': asistencias
         }, merge=True)
