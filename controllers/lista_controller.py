@@ -120,12 +120,13 @@ class ListaController(BaseController, UserController):
         nueva asistencia
         '''
         append_valor = False
-        for assistencia in asistencias:
+        for asistencia in asistencias:
             if self.check_if_key(asistencia, 'fecha') == hoy:
                 today = self.check_if_key(asistencia, 'asistencias')
                 today.append(valor)
                 append_valor = True
         if not append_valor:
+            new_asistencias= {}
             new_asistencias['fecha']=hoy
             new_asistencias['asistencias'] = [valor]
             asistencias.append(new_asistencias)
